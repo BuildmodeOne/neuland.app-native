@@ -20,6 +20,7 @@ import { trackEvent } from '@aptabase/react-native'
 import { router, useFocusEffect, useNavigation } from 'expo-router'
 import React, { useCallback, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Pressable } from 'react-native'
 import {
     Alert,
     Linking,
@@ -29,6 +30,12 @@ import {
     Text,
     View,
 } from 'react-native'
+import {
+    HealthConnectRecord,
+    initialize,
+    insertRecords,
+    requestPermission,
+} from 'react-native-health-connect'
 import { createStyleSheet, useStyles } from 'react-native-unistyles'
 
 export default function FoodDetail(): React.JSX.Element {
@@ -444,6 +451,66 @@ export default function FoodDetail(): React.JSX.Element {
             </View>
             <View style={styles.formList}>
                 <FormList sections={sections} />
+
+                <Pressable
+                    onPress={async () => {
+                        await initialize()
+
+                        const grantedPermissions = await requestPermission([
+                            {
+                                accessType: 'write',
+                                recordType: 'Nutrition',
+                            },
+                        ])
+
+                        console.log(grantedPermissions)
+
+                        const records: HealthConnectRecord[] = [
+                            {
+                                recordType: 'Nutrition',
+                                startTime: new Date().toISOString(),
+                                endTime: new Date().toISOString(),
+                                mealType: 2, // 2 = Lunch
+                                energy: {
+                                    value: meal.nutrition?.kcal ?? 0,
+                                    unit: 'kilocalories',
+                                },
+                                totalFat: {
+                                    value: meal.nutrition?.fat ?? 0,
+                                    unit: 'grams',
+                                },
+                                saturatedFat: {
+                                    value: meal.nutrition?.fatSaturated ?? 0,
+                                    unit: 'grams',
+                                },
+                                totalCarbohydrate: {
+                                    value: meal.nutrition?.carbs ?? 0,
+                                    unit: 'grams',
+                                },
+                                sugar: {
+                                    value: meal.nutrition?.sugar ?? 0,
+                                    unit: 'grams',
+                                },
+                                protein: {
+                                    value: meal.nutrition?.protein ?? 0,
+                                    unit: 'grams',
+                                },
+                                dietaryFiber: {
+                                    value: meal.nutrition?.fiber ?? 0,
+                                    unit: 'grams',
+                                },
+                            },
+                        ]
+
+                        console.log(records)
+
+                        const result = await insertRecords(records)
+
+                        console.log(result)
+                    }}
+                >
+                    <Text>Test</Text>
+                </Pressable>
             </View>
 
             <View style={styles.notesContainer}>

@@ -36,7 +36,8 @@
         "android": {
             "package": "app.neuland",
             "userInterfaceStyle": "automatic",
-            "versionCode": 274
+            "versionCode": 275,
+            "permissions": ["android.permission.health.WRITE_NUTRITION"]
         },
         "sdkVersion": "52.0.0",
         "experiments": {
@@ -97,7 +98,18 @@
                 }
             ],
             "react-native-edge-to-edge",
-            "expo-alternate-app-icons"
+            "expo-alternate-app-icons",
+            "expo-health-connect",
+            [
+                "expo-build-properties",
+                {
+                    "android": {
+                        "compileSdkVersion": 34,
+                        "targetSdkVersion": 34,
+                        "minSdkVersion": 26
+                    }
+                }
+            ]
         ],
         "extra": {
             "eas": {

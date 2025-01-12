@@ -8,6 +8,7 @@ import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
+import dev.matinzd.healthconnect.permissions.HealthConnectPermissionDelegate
 
 import expo.modules.ReactActivityDelegateWrapper
 
@@ -21,6 +22,8 @@ class MainActivity : ReactActivity() {
     SplashScreenManager.registerOnActivity(this)
     // @generated end expo-splashscreen
     super.onCreate(null)
+
+    HealthConnectPermissionDelegate.setPermissionDelegate(this)
   }
 
   /**
